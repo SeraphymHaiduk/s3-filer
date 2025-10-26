@@ -1,0 +1,3 @@
+[submodule "filer/external/aws-sdk-cpp"]
+	path = filer/external/aws-sdk-cpp
+	url = https://github.com/aws/aws-sdk-cpp.git
