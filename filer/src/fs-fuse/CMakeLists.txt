@@ -13,7 +13,15 @@ add_library(FsFuse STATIC
     FsFuse.cpp
     ContextManager.h
     FsFuse.h
+    S3ClientFacadeManager.h
+    S3ClientFacadeManager.cpp
 )
+
+if (BUILD_TESTS)
+  target_compile_definitions(FsFuse PRIVATE 
+    UNIT_TESTING
+  )
+endif()
 
 target_include_directories(FsFuse
     PUBLIC
@@ -25,5 +33,5 @@ target_link_libraries(FsFuse
     PRIVATE 
         ${FUSE_LIBRARIES}
     PUBLIC
-        FilerS3ClientWrapper # TODO: use AwsSdkManager for initialization inside of the FsFuse and don't expose it
+        S3ClientFacade # TODO: use AwsSdkManager for initialization inside of the FsFuse and don't expose it
 )

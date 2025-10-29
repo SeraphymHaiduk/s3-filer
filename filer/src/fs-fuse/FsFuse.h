@@ -14,5 +14,6 @@
 #include <sys/stat.h>
 
 namespace S3Filer {
+    class S3ClientFacadeBase;
     int initS3Fuse(int argc, char *argv[]);
 }

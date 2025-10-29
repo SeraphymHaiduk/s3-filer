@@ -1,5 +1,6 @@
 #include "ContextManager.h"
-#include "FilerS3ClientWrapper.h"
+#include "S3ClientFacade.h"
+#include "S3ClientFacadeManager.h"
 #include <aws/s3/model/CreateMultipartUploadRequest.h>
 #include <aws/s3/model/UploadPartRequest.h>
 #include <aws/s3/model/CompleteMultipartUploadRequest.h>
@@ -36,7 +37,7 @@ uint64_t ContextManager::createMultipartUpload(std::string bucket, std::string k
     request.SetBucket(ctx->bucketName.c_str());
     request.SetKey(ctx->s3Key.c_str());
 
-    auto outcome = FilerS3ClientWrapper::instance().getClient().CreateMultipartUpload(request);
+    auto outcome = S3ClientFacadeManager::getS3ClientFacade()->getClient().CreateMultipartUpload(request);
 
     if (outcome.IsSuccess()) {
         ctx->uploadId = outcome.GetResult().GetUploadId();
@@ -86,7 +87,7 @@ int ContextManager::uploadPart(uint64_t fileHandler, const char *buf, off_t size
     request.SetBody(stream);
     request.SetContentLength(size);
 
-    auto outcome = FilerS3ClientWrapper::instance().getClient().UploadPart(request);
+    auto outcome = S3ClientFacadeManager::getS3ClientFacade()->getClient().UploadPart(request);
 
     if (outcome.IsSuccess()) {
         {
@@ -118,7 +119,6 @@ int ContextManager::completeMultipartUpload(uint64_t fileHandler)
 
     Aws::S3::Model::CompletedMultipartUpload completedUpload;
     
-    // Формируем список CompletedPart из сохраненных ETag
     for (const auto& pair : ctx->completedParts) {
         Aws::S3::Model::CompletedPart part;
         part.SetPartNumber(pair.first);
@@ -127,7 +127,7 @@ int ContextManager::completeMultipartUpload(uint64_t fileHandler)
     }
     request.SetMultipartUpload(completedUpload);
 
-    auto outcome = FilerS3ClientWrapper::instance().getClient().CompleteMultipartUpload(request);
+    auto outcome = S3ClientFacadeManager::getS3ClientFacade()->getClient().CompleteMultipartUpload(request);
 
     // Clear context no matter what result is
     {
