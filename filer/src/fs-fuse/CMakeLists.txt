@@ -7,9 +7,12 @@ if(NOT FUSE_FOUND)
     message(FATAL_ERROR "library libfuse was not found via pkg-config. Make sure that libfuse-dev was installed.")
 endif()
 
+
 add_library(FsFuse STATIC
+    ContextManager.cpp
     FsFuse.cpp
-    FsFuse.h   
+    ContextManager.h
+    FsFuse.h
 )
 
 target_include_directories(FsFuse
@@ -18,4 +21,9 @@ target_include_directories(FsFuse
         ${FUSE_INCLUDE_DIRS}
 )
 
-target_link_libraries(FsFuse PRIVATE ${FUSE_LIBRARIES})
+target_link_libraries(FsFuse 
+    PRIVATE 
+        ${FUSE_LIBRARIES}
+    PUBLIC
+        FilerS3ClientWrapper # TODO: use AwsSdkManager for initialization inside of the FsFuse and don't expose it
+)
