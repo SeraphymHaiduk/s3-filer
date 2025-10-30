@@ -1,6 +1,6 @@
 
 
-## Run minIO on your S3 storage server
+## Run minIO S3 storage 
 ```
 docker pull minio/minio
 ```
@@ -16,6 +16,59 @@ docker run -p 9000:9000 -p 9001:9001 \
 
 /data/minio - local path for data
 
+NOTE: go to http://localhost:9001 and create a bucket 'development'
+
+## Build
+```
+cd filer
+
+make init-submodules
+make dep
+
+make configure
+make build
+
+```
+## Run filesystem
+
+For mounting
+```
+cd s3-filer/build
+mkdir s3mount
+S3Filer s3mount
+```
+
+For unmounting
+```
+fusermount -u s3mount
+
+rmdir s3mount #optionally
+```
+## Testing
+After building the project, running s3 storage and creating a bucket
+prepare environment for integration tests, since they are written in python
+
+```
+cd s3-filer
+make create-env
+```
+
+Then run all tests
+```
+make test
+```
+
+Only integration tests
+```
+make test-integration
+```
+
+Or only unit tests
+```
+make test-unit
+```
+
+---------------------
 
 ## Run filer on your filer-server
 TODO
