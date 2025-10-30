@@ -56,6 +56,12 @@ TEST_F(FsFuseTest, getattr)
     struct stat stat;
     fuse_file_info fi;
     __test_s3filer_getattr("zxc", &stat, &fi);
-}
 
+    /**
+     * TODO: create mock storage in S3ClientFacadeMock 
+     * and check that methods sets proper values to stat for directories and files
+     * 
+     * TODO: check return codes for missing files and path syntax errors
+     */
+}
 

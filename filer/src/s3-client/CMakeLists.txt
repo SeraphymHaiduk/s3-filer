@@ -2,6 +2,8 @@
 add_library(S3ClientFacade STATIC
     src/AwsSdkManager.cpp    
     src/S3ClientFacade.cpp
+    src/S3ClientFacadeManager.cpp
+
 )
 
 target_include_directories(S3ClientFacade

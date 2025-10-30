@@ -13,8 +13,6 @@ add_library(FsFuse STATIC
     FsFuse.cpp
     ContextManager.h
     FsFuse.h
-    S3ClientFacadeManager.h
-    S3ClientFacadeManager.cpp
 )
 
 if (BUILD_TESTS)

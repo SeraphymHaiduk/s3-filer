@@ -2,7 +2,6 @@
 #include <S3ClientFacade.h>
 
 namespace S3Filer {
-    // TODO: move to S3Client module
     class S3ClientFacadeManager
     {
     private:

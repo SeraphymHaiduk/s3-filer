@@ -12,6 +12,11 @@ using FilesType = std::vector<std::string>;
 using namespace S3Filer;
 
 namespace {
+    /**
+     * TODO: Excessive functionality in S3ClientFacade class makes harder to test fuse functions in current file
+     *       Need to try to minimize S3ClientFacade logic to simple operations with S3, and more complex responsibility 
+     *          should be moved to fuse functions
+     */
     int s3filer_getattr(const char *path, struct stat *stbuf, fuse_file_info *fi)
     {
         (void) fi;
@@ -316,6 +321,12 @@ int S3Filer::initS3Fuse(int argc, char *argv[])
     return fuse_main(argc, argv, &s3filer_operations, NULL);
 }
 
+/**
+ * Probably that __test_ functions section is an overkill
+ * 
+ * Maybe just using header with extern declaration of functions 
+ * used by FUSE will be good enough solution for testings
+ */ 
 #ifdef UNIT_TESTING
 extern const struct fuse_operations& __test_get_s3filer_operations()
 {
